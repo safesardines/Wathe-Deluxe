@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.safesardines.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "RazorCrosshairMixin",
+    "RazorHudMixin",
+    "RazorInstinctMixin",
+    "RazorShopScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

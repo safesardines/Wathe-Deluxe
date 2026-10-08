@@ -1,0 +1,30 @@
+# gradle
+.gradle/
+build/
+out/
+classes/
+
+# local run + loom cache output
+run/
+
+# idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# macos
+*.DS_Store
+
+# java
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr

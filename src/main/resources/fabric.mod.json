@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "wathedeluxe",
+  "version": "${version}",
+  "name": "wathedeluxe",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/wathedeluxe/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.safesardines.client.wathedeluxeClient"
+    ],
+    "main": [
+      "com.safesardines.wathedeluxe"
+    ]
+  },
+  "mixins": [
+    "wathedeluxe.mixins.json",
+    {
+      "config": "wathedeluxe.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "yet_another_config_lib_v3": ">=3.8.2+1.21.1-fabric",
+    "wathe": ">=1.4-1.21.1",
+    "harpymodloader": ">=1.2.5-h1.4",
+    "watheextended": ">=4.0.0-beta.1-h1.4"
+  }
+}
