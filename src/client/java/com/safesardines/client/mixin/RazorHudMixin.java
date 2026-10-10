@@ -7,6 +7,7 @@ import com.safesardines.client.ShivController;
 import com.safesardines.client.wathedeluxeClient;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.game.GameFunctions;
+import dev.doctor4t.wathe.index.WatheItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -44,12 +45,18 @@ public abstract class RazorHudMixin {
         if (ShivPayload.hasKnife(player)) {
             Text line;
             int color;
-            if (ShivController.onCooldown()) {
+            if (ShivController.hasSeconds()) {
                 line = Text.translatable("tip.wathedeluxe.razor.cooldown", ShivController.cooldownSeconds());
                 color = 0xFF5555;
+            } else if (player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) {
+                line = Text.literal("Knife is on cooldown");
+                color = 0xFF5555;
             } else {
-                line = Text.translatable("tip.wathedeluxe.razor", wathedeluxeClient.razorAbility.getBoundKeyLocalizedText());
-                color = 0x55FF55;
+                line = Text.translatable("tip.wathedeluxe.razor",
+                        wathedeluxeClient.razorAbility.getBoundKeyLocalizedText().copy().styled(style -> style.withColor(0x55FF55)))
+                        .styled(style -> style.withColor(0x00AA00))
+                        .append(Text.translatable("tip.wathedeluxe.razor.suffix").styled(style -> style.withColor(0x55FF55)));
+                color = 0x00AA00;
             }
             int drawY = context.getScaledWindowHeight() - this.getTextRenderer().getWrappedLinesHeight(line, 999999);
             context.drawTextWithShadow(this.getTextRenderer(), line, context.getScaledWindowWidth() - this.getTextRenderer().getWidth(line), drawY, color);

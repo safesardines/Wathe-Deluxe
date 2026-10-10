@@ -46,18 +46,18 @@ public final class ShivController {
     }
 
     public static void tick(MinecraftClient client) {
-        if (cooldownRemaining > 0) {
+        PlayerEntity player = client.player;
+        if (player == null || !player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) {
+            cooldownRemaining = 0;
+        } else if (cooldownRemaining > 0) {
             cooldownRemaining--;
         }
         if (holdTimer < 0) {
             return;
         }
         holdTimer--;
-        if (holdTimer < 0) {
-            PlayerEntity player = client.player;
-            if (player != null) {
-                select(client, player, originalSlot);
-            }
+        if (holdTimer < 0 && player != null) {
+            select(client, player, originalSlot);
         }
     }
 
@@ -69,7 +69,7 @@ public final class ShivController {
         cooldownRemaining = ticks;
     }
 
-    public static boolean onCooldown() {
+    public static boolean hasSeconds() {
         return cooldownRemaining > 0;
     }
 

@@ -5,5 +5,12 @@
         "name": "wathedeluxe:memories"
       }
     ]
+  },
+  "knife_throw": {
+    "sounds": [
+      {
+        "name": "wathedeluxe:knife_throw"
+      }
+    ]
   }
 }

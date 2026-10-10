@@ -12,6 +12,8 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
@@ -60,6 +62,7 @@ public record RazorThrowPayload() implements CustomPayload {
                 serverWorld.spawnEntity(knife);
             }
             player.swingHand(hand);
+            player.getWorld().playSound(null, player.getBlockPos(), SoundEvent.of(Identifier.of("wathedeluxe", "knife_throw")), SoundCategory.PLAYERS, 1.0F, 1.0F);
             GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
             if (!player.isCreative() && game.getGameMode() != WatheGameModes.LOOSE_ENDS) {
                 player.getItemCooldownManager().set(WatheItems.KNIFE, GameConstants.ITEM_COOLDOWNS.get(WatheItems.KNIFE));
