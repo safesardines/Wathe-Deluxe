@@ -68,7 +68,7 @@ public final class BleedingParticles {
         double x = player.getX() + offset.x;
         double y = player.getY() + offset.y;
         double z = player.getZ() + offset.z;
-        if (player.getRandom().nextFloat() >= 0.2F + 0.35F * progress) {
+        if (player.getRandom().nextFloat() >= 0.03F + 0.52F * progress * progress) {
             return;
         }
         double vx = (player.getRandom().nextDouble() - 0.5) * 0.2;

@@ -27,7 +27,8 @@ public class RazorRoles {
         if (RAZOR == null || !GameWorldComponent.KEY.get(player.getWorld()).isRole(player, RAZOR)) {
             return false;
         }
-        return entry.stack().isOf(WatheItems.GRENADE)
+        return entry.stack().isOf(WatheItems.REVOLVER)
+                || entry.stack().isOf(WatheItems.GRENADE)
                 || entry.stack().isOf(WatheItems.POISON_VIAL)
                 || entry.stack().isOf(WatheItems.SCORPION);
     }

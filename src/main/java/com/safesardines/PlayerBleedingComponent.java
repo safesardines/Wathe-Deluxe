@@ -16,11 +16,9 @@ import java.util.UUID;
 public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTickingComponent {
     public static final ComponentKey<PlayerBleedingComponent> KEY = ComponentRegistry.getOrCreate(Identifier.of("wathedeluxe", "bleeding"), PlayerBleedingComponent.class);
     public static final Identifier DEATH_REASON = Identifier.of("wathedeluxe", "bleed");
-    private static final int DYING_TICKS = 110;
     private final PlayerEntity player;
     public int bleedingTicks = -1;
     public int initialBleedingTicks = 0;
-    public int dyingTicks = -1;
     public int shivCount = 0;
     public UUID bleeder;
     public float stabX;
@@ -38,7 +36,6 @@ public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTicki
     public void reset() {
         this.bleedingTicks = -1;
         this.initialBleedingTicks = 0;
-        this.dyingTicks = -1;
         this.shivCount = 0;
         this.bleeder = null;
         this.stabX = 0.0F;
@@ -64,15 +61,6 @@ public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTicki
 
     @Override
     public void serverTick() {
-        if (this.dyingTicks > 0) {
-            this.dyingTicks--;
-            if (this.dyingTicks <= 0) {
-                this.reset();
-                return;
-            }
-            this.sync();
-            return;
-        }
         if (this.bleedingTicks < 0) {
             return;
         }
@@ -80,14 +68,10 @@ public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTicki
         if (this.bleedingTicks > 0) {
             return;
         }
-        this.bleedingTicks = -1;
-        this.dyingTicks = DYING_TICKS;
         VoiceDefer.defer(this.player.getUuid());
         PlayerEntity killer = this.bleeder == null ? null : this.player.getWorld().getPlayerByUuid(this.bleeder);
         GameFunctions.killPlayer(this.player, true, killer, DEATH_REASON);
-        this.bleeder = null;
-        this.shivCount = 0;
-        this.sync();
+        this.reset();
     }
 
     public static Vec3d rotateY(Vec3d v, float degrees) {
@@ -101,7 +85,6 @@ public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTicki
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.putInt("bleedingTicks", this.bleedingTicks);
         tag.putInt("initialBleedingTicks", this.initialBleedingTicks);
-        tag.putInt("dyingTicks", this.dyingTicks);
         tag.putInt("shivCount", this.shivCount);
         tag.putFloat("stabX", this.stabX);
         tag.putFloat("stabY", this.stabY);
@@ -115,7 +98,6 @@ public class PlayerBleedingComponent implements AutoSyncedComponent, ServerTicki
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         this.bleedingTicks = tag.contains("bleedingTicks") ? tag.getInt("bleedingTicks") : -1;
         this.initialBleedingTicks = tag.contains("initialBleedingTicks") ? tag.getInt("initialBleedingTicks") : 0;
-        this.dyingTicks = tag.contains("dyingTicks") ? tag.getInt("dyingTicks") : -1;
         this.shivCount = tag.contains("shivCount") ? tag.getInt("shivCount") : 0;
         this.stabX = tag.getFloat("stabX");
         this.stabY = tag.getFloat("stabY");

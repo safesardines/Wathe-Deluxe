@@ -8,6 +8,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public class HearingLoss extends AbstractSoundInstance implements TickableSoundInstance {
+    public static final float BOOST = 3.0F;
     private boolean done;
 
     public HearingLoss() {
@@ -20,7 +21,7 @@ public class HearingLoss extends AbstractSoundInstance implements TickableSoundI
 
     @Override
     public float getVolume() {
-        return BleedOverlay.intensity();
+        return BleedOverlay.staticLevel();
     }
 
     public void finish() {
