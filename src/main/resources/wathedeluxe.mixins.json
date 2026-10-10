@@ -4,7 +4,11 @@
   "package": "com.safesardines.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "RazorShopServerMixin"
+    "RazorShopServerMixin",
+    "GrenadeBreakMixin",
+    "EntitySprintParticleMixin",
+    "BlockItemMixin",
+    "TrainVoicePluginMixin"
   ],
   "injectors": {
     "defaultRequire": 1

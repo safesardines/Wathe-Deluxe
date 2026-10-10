@@ -69,6 +69,7 @@ dependencies {
     modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-scoreboard:${project.cca_version}"
     modImplementation "dev.doctor4t:ratatouille:${project.ratatouille_version}"
     modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+    modCompileOnly "de.maxhenkel.voicechat:voicechat-api:${project.voicechat_version}"
 }
 
 processResources {

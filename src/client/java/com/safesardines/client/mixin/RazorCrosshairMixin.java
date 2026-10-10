@@ -3,19 +3,14 @@ package com.safesardines.client.mixin;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.safesardines.RazorRoles;
-import com.safesardines.RazorStabPayload;
+import com.safesardines.ShivPayload;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.game.GameFunctions;
-import dev.doctor4t.wathe.index.WatheItems;
-import dev.doctor4t.wathe.item.KnifeItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,20 +31,10 @@ public class RazorCrosshairMixin {
         if (!GameWorldComponent.KEY.get(player.getWorld()).isRole(player, RazorRoles.RAZOR)) {
             return;
         }
-        if (!player.getMainHandStack().isEmpty()) {
+        if (!ShivPayload.hasKnife(player)) {
             return;
         }
-        if (!RazorStabPayload.hasKnife(player)) {
-            return;
-        }
-        if (player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) {
-            return;
-        }
-        HitResult hit = KnifeItem.getKnifeTarget(player);
-        if (!(hit instanceof EntityHitResult entityHit) || !(entityHit.getEntity() instanceof PlayerEntity target)) {
-            return;
-        }
-        if (!RazorStabPayload.isBackstabTarget(player, target)) {
+        if (ShivPayload.findTarget(player) == null) {
             return;
         }
         RenderSystem.enableBlend();

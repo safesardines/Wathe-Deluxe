@@ -1,13 +1,12 @@
 package com.safesardines.client.mixin;
 
 import com.safesardines.RazorRoles;
-import com.safesardines.RazorStabPayload;
+import com.safesardines.ShivPayload;
 import com.safesardines.ThrownKnifeEntity;
+import com.safesardines.client.ShivController;
 import com.safesardines.client.wathedeluxeClient;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
-import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
-import dev.doctor4t.wathe.index.WatheItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -42,15 +41,11 @@ public abstract class RazorHudMixin {
         if (!GameWorldComponent.KEY.get(player.getWorld()).isRole(player, RazorRoles.RAZOR)) {
             return;
         }
-        if (RazorStabPayload.hasKnife(player)) {
+        if (ShivPayload.hasKnife(player)) {
             Text line;
             int color;
-            if (wathedeluxeClient.razorCooldownTicks > 0 && player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) { // for edge cases
-                line = Text.translatable("tip.wathedeluxe.razor.cooldown", (wathedeluxeClient.razorCooldownTicks + 19) / 20);
-                color = 0xFF5555;
-            } else if (player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) {
-                float progress = player.getItemCooldownManager().getCooldownProgress(WatheItems.KNIFE, 0.0F);
-                line = Text.translatable("tip.wathedeluxe.razor.cooldown", (int) Math.ceil(progress * GameConstants.ITEM_COOLDOWNS.get(WatheItems.KNIFE) / 20.0F));
+            if (ShivController.onCooldown()) {
+                line = Text.translatable("tip.wathedeluxe.razor.cooldown", ShivController.cooldownSeconds());
                 color = 0xFF5555;
             } else {
                 line = Text.translatable("tip.wathedeluxe.razor", wathedeluxeClient.razorAbility.getBoundKeyLocalizedText());

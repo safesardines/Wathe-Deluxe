@@ -15,6 +15,17 @@
     ],
     "main": [
       "com.safesardines.wathedeluxe"
+    ],
+    "cardinal-components": [
+      "com.safesardines.WathedeluxeComponents"
+    ],
+    "voicechat": [
+      "com.safesardines.VoiceMuffle"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "wathedeluxe:bleeding"
     ]
   },
   "mixins": [
