@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "wathedeluxe:gui/guidebook/sprites/abilities/psychagogue.png",
+      "ascent": 9,
+      "height": 12,
+      "chars": [
+        "\uE325"
+      ]
+    }
+  ]
+}

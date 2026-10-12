@@ -1,11 +1,11 @@
 # Wathe: Deluxe
 
 
-- only one killer so far: razor
--  u may look inside....
+- razor, psychagogue, libertinari
+- they're cool (:
 
-- cooler destruction stuff planned and wip
-- more killers, civilians and perhaps a Third category wip
-- opinionated 'neutral role' rework wip
+- block destruction system WIP (enable at your own cost)
+- new killers wip
+- existing killers might need some more polishing
 
-
+- feel free to PR, no AI plz
