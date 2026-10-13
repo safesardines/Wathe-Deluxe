@@ -2,6 +2,8 @@ package com.safesardines.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.safesardines.DeluxeShop;
+import com.safesardines.LibertinariRoles;
 import com.safesardines.RazorRoles;
 import dev.doctor4t.wathe.cca.PlayerShopComponent;
 import dev.doctor4t.wathe.util.ShopEntry;
@@ -21,6 +23,7 @@ public class RazorShopServerMixin {
     @WrapOperation(method = "tryBuy(I)V", at = @At(value = "FIELD", target = "Ldev/doctor4t/wathe/game/GameConstants;SHOP_ENTRIES:Ljava/util/List;", opcode = Opcodes.GETSTATIC))
     private List<ShopEntry> wathedeluxe$filterShop(Operation<List<ShopEntry>> original) {
         List<ShopEntry> entries = original.call();
-        return entries.stream().filter(entry -> !RazorRoles.isShopHidden(this.player, entry)).toList();
+        entries = entries.stream().filter(entry -> !RazorRoles.isShopHidden(this.player, entry) && !LibertinariRoles.isShopHidden(this.player, entry)).toList();
+        return DeluxeShop.apply(this.player, entries);
     }
 }

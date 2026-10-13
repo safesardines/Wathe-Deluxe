@@ -5,9 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "RazorShopServerMixin",
+    "DeluxeCollisionMixin",
+    "DeluxeWorldComponentMixin",
     "GrenadeBreakMixin",
-    "EntitySprintParticleMixin",
-    "BlockItemMixin",
+    "SillyPlaceMixin",
     "TrainVoicePluginMixin"
   ],
   "injectors": {

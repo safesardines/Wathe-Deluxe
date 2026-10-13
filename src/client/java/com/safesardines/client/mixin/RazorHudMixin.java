@@ -53,7 +53,7 @@ public abstract class RazorHudMixin {
                 color = 0xFF5555;
             } else {
                 line = Text.translatable("tip.wathedeluxe.razor",
-                        wathedeluxeClient.razorAbility.getBoundKeyLocalizedText().copy().styled(style -> style.withColor(0x55FF55)))
+                        wathedeluxeClient.ability.getBoundKeyLocalizedText().copy().styled(style -> style.withColor(0x55FF55)))
                         .styled(style -> style.withColor(0x00AA00))
                         .append(Text.translatable("tip.wathedeluxe.razor.suffix").styled(style -> style.withColor(0x55FF55)));
                 color = 0x00AA00;
