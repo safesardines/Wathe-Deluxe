@@ -23,6 +23,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -35,6 +36,7 @@ public class ThrownKnifeEntity extends ThrownItemEntity {
     private static final TrackedData<Boolean> LODGED = DataTracker.registerData(ThrownKnifeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Optional<UUID>> THROWER = DataTracker.registerData(ThrownKnifeEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     private static final TrackedData<Byte> FACE = DataTracker.registerData(ThrownKnifeEntity.class, TrackedDataHandlerRegistry.BYTE);
+    private static final float RECLAIM_MARGIN = 0.3F;
 
     public ThrownKnifeEntity(EntityType<ThrownKnifeEntity> type, World world) {
         super(type, world);
@@ -146,7 +148,14 @@ public class ThrownKnifeEntity extends ThrownItemEntity {
     }
 
     public static boolean isOwnKnifeTargeted(PlayerEntity player, double range) {
-        return ProjectileUtil.getCollision(player, entity -> entity instanceof ThrownKnifeEntity knife
-                && knife.isLodged() && player.getUuid().equals(knife.getThrowerUuid()), range) instanceof EntityHitResult;
+        World world = player.getWorld();
+        Vec3d start = player.getEyePos();
+        Vec3d look = player.getRotationVec(1.0F);
+        Vec3d end = start.add(look.multiply(range));
+        Box box = player.getBoundingBox().stretch(look.multiply(range)).expand(1.0);
+        return ProjectileUtil.getEntityCollision(world, player, start, end, box,
+                entity -> entity instanceof ThrownKnifeEntity knife
+                        && knife.isLodged() && player.getUuid().equals(knife.getThrowerUuid()),
+                RECLAIM_MARGIN) != null;
     }
 }
