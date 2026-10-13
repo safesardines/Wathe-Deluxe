@@ -7,6 +7,8 @@ import dev.doctor4t.wathe.client.util.WatheItemTooltips;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheItems;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -21,7 +23,7 @@ import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 public class wathedeluxeClient implements ClientModInitializer {
-    public static KeyBinding razorAbility;
+    public static KeyBinding ability;
     // i don't know how to do it properly sorry
     private static boolean attackWasDown;
     private static boolean useWasDown;
@@ -29,15 +31,17 @@ public class wathedeluxeClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        razorAbility = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.wathedeluxe.razor", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F, "category.wathe.keybinds"));
+        ability = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.wathedeluxe.ability", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F, "category.wathe.keybinds"));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ForcedTask.tick(client);
             BleedOverlay.tick(client);
             BleedSound.tick(client);
             BleedingParticles.tick(client);
             ShivController.tick(client);
-            if (razorAbility.wasPressed()) {
+            LibertinariController.tick(client);
+            if (ability.wasPressed()) {
                 ShivController.shiv(client);
+                LibertinariController.ability(client);
             }
             boolean attackDown = client.options.attackKey.isPressed();
             if (attackDown && !attackWasDown && client.currentScreen == null) {
@@ -74,7 +78,15 @@ public class wathedeluxeClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(PsychagogueDataPayload.ID, (payload, context) -> context.client().execute(() -> PsychagogueClientData.set(payload.entries())));
         ClientPlayNetworking.registerGlobalReceiver(PsychagogueForcedPayload.ID, (payload, context) -> context.client().execute(() -> ForcedTask.set(payload.task())));
         ClientPlayNetworking.registerGlobalReceiver(ShivCooldownPayload.ID, (payload, context) -> context.client().execute(() -> ShivController.setCooldown(payload.ticks())));
+        ClientPlayNetworking.registerGlobalReceiver(LibertinariCooldownPayload.ID, (payload, context) -> context.client().execute(() -> LibertinariController.setCooldown(payload.ticks())));
+        ClientPlayNetworking.registerGlobalReceiver(LibertinariArmedPayload.ID, (payload, context) -> context.client().execute(() -> LibertinariController.setArmed(payload.ids())));
         EntityRendererRegistry.register(RazorRoles.THROWN_KNIFE, ThrownKnifeRenderer::new);
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
+                dispatcher.register(ClientCommandManager.literal("wathedeluxe:config").executes(context -> {
+                    MinecraftClient client = context.getSource().getClient();
+                    client.setScreen(WathedeluxeConfig.HANDLER.generateGui().generateScreen(client.currentScreen));
+                    return 1;
+                })));
         HudRenderCallback.EVENT.register((context, tickCounter) -> BleedOverlay.renderOverlay(context, tickCounter));
         ItemTooltipCallback.EVENT.register((stack, tooltipContext, tooltipType, lines) -> {
             if (!stack.isOf(WatheItems.KNIFE)) {

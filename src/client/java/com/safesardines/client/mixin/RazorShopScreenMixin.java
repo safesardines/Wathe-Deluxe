@@ -2,6 +2,8 @@ package com.safesardines.client.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.safesardines.DeluxeShop;
+import com.safesardines.LibertinariRoles;
 import com.safesardines.RazorRoles;
 import dev.doctor4t.wathe.client.gui.screen.ingame.LimitedInventoryScreen;
 import dev.doctor4t.wathe.util.ShopEntry;
@@ -22,6 +24,7 @@ public class RazorShopScreenMixin {
         if (player == null) {
             return entries;
         }
-        return entries.stream().filter(entry -> !RazorRoles.isShopHidden(player, entry)).toList();
+        entries = entries.stream().filter(entry -> !RazorRoles.isShopHidden(player, entry) && !LibertinariRoles.isShopHidden(player, entry)).toList();
+        return DeluxeShop.apply(player, entries);
     }
 }

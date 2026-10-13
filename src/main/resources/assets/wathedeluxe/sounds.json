@@ -12,5 +12,19 @@
         "name": "wathedeluxe:knife_throw"
       }
     ]
+  },
+  "libertinari_squish": {
+    "sounds": [
+      {
+        "name": "wathedeluxe:libertinari_squish"
+      }
+    ]
+  },
+  "libertinari_explosion": {
+    "sounds": [
+      {
+        "name": "wathedeluxe:libertinari_explosion"
+      }
+    ]
   }
 }

@@ -5,7 +5,12 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "CameraMixin",
+    "DeluxeConfigScreenMixin",
+    "DeluxeGuidebookMixin",
     "GameRendererAccessor",
+    "LibertinariBodyRendererMixin",
+    "LibertinariHudMixin",
+    "LibertinariInstinctMixin",
     "PsychagogueInventoryMixin",
     "PsychagogueMoodRendererMixin",
     "PsychagogueTaskRendererMixin",
